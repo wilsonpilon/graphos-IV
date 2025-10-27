@@ -336,7 +336,6 @@ class SplashScreen(ctk.CTkToplevel):
 
 
 # --- Adicione esta nova classe no seu arquivo main.py ---
-
 class VersionDialog(ctk.CTkToplevel):
     """
     Diálogo customizado para a versão do sistema, com design retrô-moderno.
@@ -348,12 +347,10 @@ class VersionDialog(ctk.CTkToplevel):
         self.title("Versão do Sistema")
         self.geometry("450x300")
 
-        # Faz com que o diálogo seja modal (bloqueia o principal até fechar)
         self.transient(master)
         self.grab_set()
 
-        # Simula o efeito "vidro" com cores e transparência
-        self.configure(fg_color=("gray95", "gray15"))  # Fundo claro/escuro para o efeito
+        self.configure(fg_color=("gray95", "gray15"))
 
         # Centraliza a janela
         self.update_idletasks()
@@ -373,8 +370,12 @@ class VersionDialog(ctk.CTkToplevel):
                      font=ctk.CTkFont(size=22, weight="bold"),
                      text_color="white").pack(padx=20, pady=5)
 
-        # --- 2. Corpo do Texto (Ciano com Letras Pretas) ---
-        text_frame = ctk.CTkFrame(self, fg_color="#E0FFFF", corner_radius=10)  # Ciano/Aqua muito claro (simula vidro)
+        # --- 2. Corpo do Texto (Fundo Ciano Mais Escuro com Letras Pretas e BOLD) ---
+
+        # Cor ciano escuro: #00A6A6 (um ciano/teal mais saturado)
+        DARK_CYAN_BG = "#00A6A6"
+
+        text_frame = ctk.CTkFrame(self, fg_color=DARK_CYAN_BG, corner_radius=10)
         text_frame.pack(padx=20, pady=10, fill="both", expand=True)
         text_frame.grid_rowconfigure((0, 4), weight=1)
         text_frame.grid_columnconfigure(0, weight=1)
@@ -390,8 +391,9 @@ class VersionDialog(ctk.CTkToplevel):
             "Desenvolvido com Python/CustomTkinter e Google Gemini"
         )
 
+        # Ajuste: weight="bold" adicionado para o efeito de letras mais cheias
         ctk.CTkLabel(text_frame, text=version_text,
-                     font=ctk.CTkFont(size=14, family="Consolas"),  # Fonte Mono para toque retrô
+                     font=ctk.CTkFont(size=14, family="Consolas", weight="bold"),
                      text_color="black",
                      fg_color="transparent").grid(row=0, column=0, padx=15, pady=15, sticky="nsew")
 
@@ -403,6 +405,7 @@ class VersionDialog(ctk.CTkToplevel):
         """Fecha a caixa de diálogo e devolve o foco ao mestre."""
         self.grab_release()
         self.destroy()
+
 
 
 # --- Execução Principal ---
