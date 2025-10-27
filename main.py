@@ -270,15 +270,13 @@ class App(ctk.CTk):
             self.status_label.configure(text="Status: Aguardando comando...")
 
     def show_version_info(self):
-        version_text = (
-            "**Graphos IV - Editor Gráfico MSX SCREEN 2**\n\n"
-            "Versão: 0.1 (Alpha)\n"
-            "Inspirado em: Graphos III (Renato Degiovani - 1987)\n"
-            "Desenvolvido com: Python, CustomTkinter, SQLite\n"
-            "Suporte IA: Google Gemini"
-        )
-        self.display_message(version_text)
-        self.status_label.configure(text="Exibindo informações da versão.")
+        """Abre a caixa de diálogo customizada para a versão do sistema."""
+        # Cria e exibe a nova janela de diálogo modal
+        VersionDialog(self)
+
+        # Mantém a área principal limpa ou com uma mensagem de status
+        self.display_message("Aguardando confirmação do Diálogo de Versão.")
+        self.status_label.configure(text="Diálogo de Versão aberto.")
 
     def quit_app(self):
         if messagebox.askyesno("Confirmar Encerramento", "Tem certeza que deseja fechar o Graphos IV?"):
@@ -335,6 +333,76 @@ class SplashScreen(ctk.CTkToplevel):
     def destroy_splash_and_open_main(self):
         self.destroy()
         self.master.deiconify()
+
+
+# --- Adicione esta nova classe no seu arquivo main.py ---
+
+class VersionDialog(ctk.CTkToplevel):
+    """
+    Diálogo customizado para a versão do sistema, com design retrô-moderno.
+    """
+
+    def __init__(self, master):
+        super().__init__(master)
+        self.master = master
+        self.title("Versão do Sistema")
+        self.geometry("450x300")
+
+        # Faz com que o diálogo seja modal (bloqueia o principal até fechar)
+        self.transient(master)
+        self.grab_set()
+
+        # Simula o efeito "vidro" com cores e transparência
+        self.configure(fg_color=("gray95", "gray15"))  # Fundo claro/escuro para o efeito
+
+        # Centraliza a janela
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        x = master.winfo_x() + (master.winfo_width() - width) // 2
+        y = master.winfo_y() + (master.winfo_height() - height) // 2
+        self.geometry(f'+{x}+{y}')
+
+        self.grid_rowconfigure((0, 2), weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+        # --- 1. Header do Diálogo (Vermelho com Letras Brancas) ---
+        header_frame = ctk.CTkFrame(self, fg_color="red", height=40, corner_radius=0)
+        header_frame.pack(fill="x", pady=(0, 10))
+        ctk.CTkLabel(header_frame, text="GRAPHOS IV",
+                     font=ctk.CTkFont(size=22, weight="bold"),
+                     text_color="white").pack(padx=20, pady=5)
+
+        # --- 2. Corpo do Texto (Ciano com Letras Pretas) ---
+        text_frame = ctk.CTkFrame(self, fg_color="#E0FFFF", corner_radius=10)  # Ciano/Aqua muito claro (simula vidro)
+        text_frame.pack(padx=20, pady=10, fill="both", expand=True)
+        text_frame.grid_rowconfigure((0, 4), weight=1)
+        text_frame.grid_columnconfigure(0, weight=1)
+
+        version_text = (
+            "--- EDIÇÃO ORIGINAL MSX ---\n"
+            "Versão: 1.21\n"
+            "(C) Copyright 1987 Renato Degiovani\n"
+            "\n"
+            "--- EDIÇÃO MODERNA PYTHON ---\n"
+            "Versão: 2.0\n"
+            "(C) Copyright 2025 Wilson \"Barney\" Pilon\n"
+            "Desenvolvido com Python/CustomTkinter e Google Gemini"
+        )
+
+        ctk.CTkLabel(text_frame, text=version_text,
+                     font=ctk.CTkFont(size=14, family="Consolas"),  # Fonte Mono para toque retrô
+                     text_color="black",
+                     fg_color="transparent").grid(row=0, column=0, padx=15, pady=15, sticky="nsew")
+
+        # --- 3. Botão Fechar ---
+        ctk.CTkButton(self, text="Fechar", command=self.close_dialog,
+                      fg_color="gray", hover_color="gray50").pack(pady=10)
+
+    def close_dialog(self):
+        """Fecha a caixa de diálogo e devolve o foco ao mestre."""
+        self.grab_release()
+        self.destroy()
 
 
 # --- Execução Principal ---
