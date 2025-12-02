@@ -50,6 +50,13 @@ Carrega "dumps" de tela ou layouts completos (`.SCR` ou formatos proprietários 
 
 ![Screen Viewer](images/screenV.png)
 
+### 4. Visualizador de Layouts (`layoutV.py`)
+Ferramenta especializada na leitura de arquivos de Layout (`.LAY`). Estes arquivos utilizam uma compressão RLE proprietária e contêm apenas informações de padrão (bitmap), sem cor.
+*   **Funcionalidades:** Decodificação do algoritmo proprietário do Graphos III e exportação em alta resolução.
+*   **Visualização:**
+
+![Layout Viewer](images/layoutV.png)
+
 ---
 
 ## ⚙️ Ferramentas Utilizadas
