@@ -118,6 +118,10 @@ Ferramenta especializada na leitura de arquivos de Layout (`.LAY`), que utilizam
 
 O Graphos III foi um dos mais notáveis editores gráficos para o MSX brasileiro, criado por **Renato Degiovani**. Foi crucial para a comunidade MSX na década de 80, permitindo que usuários criassem telas de jogos e programas aproveitando ao máximo a restrição gráfica do SCREEN 2.
 
+## 👏 Agradecimentos Especiais
+
+Um agradecimento especial ao **CyberKnight** (veja o projeto em [Unicorn Dreams](https://www.angelfire.com/art2/unicorndreams/msx/)), que desenvolveu uma versão em **Pascal para MS-DOS** em 2005. Seu trabalho em engenharia reversa e documentação dos formatos de arquivo do Graphos III foi uma referência inestimável para o desenvolvimento desta versão moderna.
+
 ## 🤖 Suporte de IA
 
 Este projeto conta com o auxílio do modelo de linguagem **Google Gemini** para validação de especificações técnicas do VDP (Video Display Processor) do MSX1, layout de memória da **SCREEN 2** (PNT, PCT, GGT) e otimização de código Python.
