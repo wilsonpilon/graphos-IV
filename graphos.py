@@ -1,8 +1,6 @@
 import customtkinter as ctk
 from PIL import Image
 import os
-import sys
-import subprocess
 from tkinter import messagebox
 
 # --- Configurações Iniciais ---
@@ -23,25 +21,19 @@ COLOR_ACTION_BG = "gray80"  # Fundo Cinza Claro
 COLOR_ACTION_BUTTON_FG = "black"  # Botão Preto
 COLOR_ACTION_BUTTON_TEXT = "white"  # Texto Branco
 
-# --- Estrutura do Menu (Adicionado o Nível 3 e Ver/Exportar) ---
+# --- Estrutura do Menu (Adicionado o Nível 3) ---
 MENU_OPTIONS = {
     "Tela": {
         "Display": {
-            "Rotina A": {}, "Rotina B": {}, "Rotina C": {}, "Rotina D": {}
+            "Rotina A": {}, "Rotina B": {}, "Rotina C": {}, "Rotina D": {}  # NOVO NÍVEL
         },
-        "Edita": {}, "Arquiva": {}, "Recupera": {}, "Ver/Exportar": {}
+        "Edita": {}, "Arquiva": {}, "Recupera": {}
     },
     "Alfabeto": {
-        "Edita": {}, "Arquiva": {}, "Recupera": {}, "Ver/Exportar": {}
+        "Edita": {}, "Arquiva": {}, "Recupera": {}
     },
     "Shapes": {
-        "Cria": {}, "Arquiva": {}, "Recupera": {}, "Ver/Exportar": {}
-    },
-    "Layout": {
-        "Display": {
-            "Rotina A": {}, "Rotina B": {}, "Rotina C": {}, "Rotina D": {}
-        },
-        "Edita": {}, "Arquiva": {}, "Recupera": {}, "Ver/Exportar": {}
+        "Cria": {}, "Arquiva": {}, "Recupera": {}
     },
     "Arquivos": {
         "Diretorio": {}, "Abrir": {}, "Gravar": {}, "Exportar": {}, "Importar": {}
@@ -179,13 +171,8 @@ class App(ctk.CTk):
         self.action_frame.grid_forget()
         self.current_submenu = submenu_name
 
-        # --- Lógica para Visualizadores Externos (Ver/Exportar) ---
-        if submenu_name == "Ver/Exportar":
-            self.launch_viewer(self.current_menu)
-            return
-
         # Lógica para Menus de Nível 3 (Rotinas de Display)
-        if self.current_menu in ["Tela", "Layout"] and submenu_name == "Display":
+        if self.current_menu == "Tela" and submenu_name == "Display":
             self.action_frame.grid(row=0, column=2, sticky="nswe")
             self.show_display_options()
             return
@@ -200,33 +187,6 @@ class App(ctk.CTk):
         self.display_message(f"Ação: {self.current_menu} -> {submenu_name} (Implementar!)")
         self.status_label.configure(text=f"Ação executada: {submenu_name}")
 
-    def launch_viewer(self, menu_name):
-        """Lança os scripts externos de visualização baseados no menu selecionado."""
-        script_map = {
-            "Tela": "screenV.py",
-            "Alfabeto": "alphabetV.py",
-            "Shapes": "shapeV_2.py",
-            "Layout": "layoutV.py"
-        }
-
-        script_name = script_map.get(menu_name)
-
-        if script_name:
-            # Verifica se o arquivo existe antes de tentar abrir
-            if not os.path.exists(script_name):
-                messagebox.showerror("Erro", f"O arquivo '{script_name}' não foi encontrado no diretório.")
-                return
-
-            try:
-                # Usa sys.executable para garantir que usamos o mesmo Python do ambiente virtual
-                subprocess.Popen([sys.executable, script_name])
-                self.display_message(f"Iniciando módulo externo: {script_name}...")
-                self.status_label.configure(text=f"Módulo externo lançado: {script_name}")
-            except Exception as e:
-                messagebox.showerror("Erro de Execução", f"Não foi possível abrir {script_name}:\n{e}")
-        else:
-            self.display_message(f"Nenhum visualizador configurado para o menu '{menu_name}'.")
-
     def show_display_options(self):
         """Mostra opções detalhadas do Display (Rotinas A, B, C, D) - Nível 3."""
         self.clear_frame(self.action_frame)
@@ -239,7 +199,7 @@ class App(ctk.CTk):
                      fg_color=COLOR_ACTION_BG).pack(padx=10, pady=10)
 
         # Opções de Rotina
-        rotinas = MENU_OPTIONS[self.current_menu]["Display"].keys()
+        rotinas = MENU_OPTIONS["Tela"]["Display"].keys()
         for opt in rotinas:
             button = ctk.CTkButton(self.action_frame, text=opt,
                                    command=lambda o=opt: self.display_message(f"Executando: Display -> {o}"),
@@ -445,6 +405,7 @@ class VersionDialog(ctk.CTkToplevel):
         """Fecha a caixa de diálogo e devolve o foco ao mestre."""
         self.grab_release()
         self.destroy()
+
 
 
 # --- Execução Principal ---
